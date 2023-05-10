@@ -48,11 +48,11 @@
     padding-top: 20px;
 }
 
-form input, button {
+.form-container form input, button {
     height: 40px;
 }
 
-form button {
+.form-cotnainer form button {
     padding: 0 15px;
 }
 
@@ -65,5 +65,19 @@ nav {
 .user {
     background: #312B40;
     height: 100vh;
-    color: white;
+}
+
+#user-home {
+    color: purple;
+    text-align: center;
+}
+
+#inventory input {
+    padding: 5px 15px;
+    position: relative;
+    top: -20px;
+}
+
+.data input {
+    height: 40px;
 }
