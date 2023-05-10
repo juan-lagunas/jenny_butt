@@ -1,0 +1,69 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* no user home */
+
+#no-user {
+    background: #312B40;
+    height: 100vh;
+    color: white;
+    overflow: hidden;
+}
+
+#banner {
+    width: 100%;
+    height: 50%;
+}
+
+#banner h1 {
+    position: relative;
+    top: 60px;
+    margin: 0;
+    text-align: center;
+    font: 50px bold;
+    font-family: sans-serif;
+}
+
+.no-user-home .col a {
+    font-size: 50px;
+    color: #F2DFD8;
+}
+
+/* sign in and sign up */
+
+.form-container {
+    height: 100vp;
+    position: relative;
+    top: 50px;
+    left: 50px;
+}
+
+.form-container form {
+    padding-top: 30px;
+}
+
+.form-container h3 {
+    padding-top: 20px;
+}
+
+form input, button {
+    height: 40px;
+}
+
+form button {
+    padding: 0 15px;
+}
+
+/* user home */
+
+nav {
+    background: #252126;
+}
+
+.user {
+    background: #312B40;
+    height: 100vh;
+    color: white;
+}
