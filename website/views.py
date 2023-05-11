@@ -73,8 +73,8 @@ def signout(request):
 def dataEntry(request):
     if request.method == 'POST':
         # Set variables for user input
-        form_category = request.POST['category']
-        form_part = request.POST['part']
+        form_category = request.POST['category'].title()
+        form_part = request.POST['part'].title()
         try:
             form_price = float(request.POST['price'])
         except ValueError:
@@ -89,9 +89,9 @@ def dataEntry(request):
             })
         
         # Get category data using user's input
-        category_data = Category.objects.filter(category__iexact=form_category).first()
+        category_data = Category.objects.filter(category=form_category)
         if category_data.exists():
-            if Part.objects.filter(name__iexact=form_part).exists():
+            if Part.objects.filter(name=form_part).exists():
                 return render(request, 'website/home.html', {
                     'message2': 'Part already exists'
                 })
@@ -99,15 +99,20 @@ def dataEntry(request):
                 Part.objects.create(
                     name=form_part,
                     price=form_price,
-                    category=category_data
+                    category=category_data.first()
                 )
-        else:
-            Category.objects.create(category=form_category)
-            Part.objects.create(
-                name=form_part,
-                price=form_price,
-                category=category_data
-            )
+        else:      
+            try: 
+                Category.objects.create(category=form_category)
+                Part.objects.create(
+                    name=form_part,
+                    price=form_price,
+                    category=category_data.first()
+                )
+            except:
+                return render(request, 'website/home.html', {
+                    'message2': 'Part name already taken. Must be unique.'
+                })
 
         return render(request, 'website/home.html', {
             'message2': 'Data entry successful!'
@@ -118,7 +123,7 @@ def dataEntry(request):
 def addInventory(request):
     if request.method == 'POST':
         # Store user input and confirm input for quantity is a whole number
-        form_part = request.POST['part']
+        form_part = request.POST['part'].title()
         try:
             form_quantity = int(request.POST['quantity'])
         except ValueError:
@@ -134,19 +139,19 @@ def addInventory(request):
         
         # Check that part exists in Parts database
         try:
-            part_data = Part.objects.get(name__iexact=form_part)
+            part_data = Part.objects.get(name=form_part)
         except:
             return render(request, 'website/home.html', {
                 'message1': 'Part not found'
             })
         
         # Using part data get subcategory data
-        category_data = Category.objects.get(category__iexact=part_data.category)
+        category_data = Category.objects.get(category=part_data.category)
         date = datetime.now()
 
         # If part exists in Inventory database update quantity else put part in database
-        if Inventory.objects.filter(name__iexact=part_data.name).exists():
-            inventory_data = Inventory.objects.get(name__iexact=part_data.name)
+        if Inventory.objects.filter(name=part_data.name).exists():
+            inventory_data = Inventory.objects.get(name=part_data.name)
             inventory_data.quantity += form_quantity
             inventory_data.save()
         else:
@@ -173,6 +178,22 @@ def addInventory(request):
 
 def inventory(request):
     inventory = Inventory.objects.all()
+    total = 0
+    for part in inventory:
+        row_total = part.price * part.quantity
+        total += row_total
+
+
     return render(request, 'website/inventory.html', {
         'inventory': inventory,
+        'total': f'{total:.2f}',
     })
+
+def log(request):
+    logs = Log.objects.all()
+    return render(request, 'website/logs.html', {
+        'logs': logs
+    })
+
+def checkout(request):
+    pass

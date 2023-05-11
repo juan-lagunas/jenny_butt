@@ -10,7 +10,7 @@ class PartAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'price',)
 
 class InventoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'category', 'name', 'quantity', 'price',)
+    list_display = ('id', 'category', 'name', 'quantity', 'price', 'total_cost')
 
 class LogAdmin(admin.ModelAdmin):
     list_display = ('id', 'category', 'name', 'quantity', 'price', 'time',)

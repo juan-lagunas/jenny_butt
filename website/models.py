@@ -9,7 +9,7 @@ class Category(models.Model):
 
        
 class Part(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     price = models.FloatField()
     category = models.ForeignKey(
         Category,
@@ -25,6 +25,12 @@ class Inventory(models.Model):
     name = models.CharField(max_length=100)
     quantity = models.IntegerField()
     price = models.FloatField()
+
+    @property
+    def total_cost(self):
+        total = self.price * self.quantity
+        return f'{total:.2f}'
+
     
 class Log(models.Model):
     category = models.CharField(max_length=64)
