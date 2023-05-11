@@ -6,7 +6,7 @@
 /* no user home */
 
 #no-user {
-    background: #312B40;
+    background: #141D29;
     height: 100vh;
     color: white;
     overflow: hidden;
@@ -59,25 +59,28 @@
 /* user home */
 
 nav {
-    background: #252126;
+    background: #1B1D1E;
 }
 
 .user {
-    background: #312B40;
+    background: #141D29;
     height: 100vh;
 }
 
 #user-home {
-    color: purple;
     text-align: center;
+    color: #BBD4D8;
 }
 
-#inventory input {
+#user-home h4 {
+    padding-top: 20px
+}
+
+#user-home h1 {
+    padding-top: 50px
+}
+
+#addInventory input, .data input {
+    margin: 10px 0;
     padding: 5px 15px;
-    position: relative;
-    top: -20px;
-}
-
-.data input {
-    height: 40px;
 }

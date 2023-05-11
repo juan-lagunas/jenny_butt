@@ -2,44 +2,29 @@
 {% block title %}Home{% endblock %}
 {% block body %}
     <div id="user-home">
+        <h4 id="greet">Welcome, {{ request.user }}!</h4>
         <h1>Inventory Entry: </h1>
-        <form method="post" name="inventory" id="inventory">
-            <select class="form-select" size="3" aria-label="size 3 select example">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
-
-            <select class="form-select" size="3" aria-label="size 3 select example">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
-
-            <select class="form-select" size="3" aria-label="size 3 select example">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
-
+        
+        <form action="{% url 'addInventory' %}" method="post" id="addInventory">
+            {% csrf_token %}
+            {% if message1 %}
+                <h6>{{ message1 }}</h6>
+            {% endif %}
+            <input type="text" placeholder="Part name" name="part" autofocus required>
+            <input type="text" placeholder="Quantity" name="quantity" required>
             <input type="submit" value="submit">
-
         </form>
 
         <h1>Data Entry: </h1>
-        <form method="post" name="category" class="data">
-            <input type="text" placeholder="Category">
-            <input type="submit" value="submit">
-        </form>
-        <form method="post" name="Type" class="data">
-            <input type="text" placeholder="Part Type">
-            <input type="submit" value="submit">
-        </form>
-        <form method="post" name="Part" class="data">
-            <input type="text" placeholder="Part Name">
+        <form action="{% url 'dataEntry' %}" method="post"class="data">
+            {% csrf_token %}
+            {% if message2 %}
+                <h6>{{ message2 }}</h6>
+            {% endif %}
+            <input type="text" name="category" placeholder="Category" required>
+            <input type="text" name="subcategory" placeholder="Subcategory" required>
+            <input type="text" name="part" placeholder="Part Name" required>
+            <input type="text" name="price" placeholder="Part Price" required>
             <input type="submit" value="submit">
         </form>
     </div>
