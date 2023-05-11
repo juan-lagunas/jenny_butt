@@ -1,25 +1,21 @@
 from django.contrib import admin
 
-from .models import Category, Subcategory, Part, Inventory, Log
+from .models import Category, Part, Inventory, Log
 
 # Register your models here.
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'category',)
 
-class SubAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subcategory', 'category',)
-
 class PartAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'subcategory', 'price',)
+    list_display = ('id', 'name', 'category', 'price',)
 
 class InventoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'category', 'name', 'subcategory', 'quantity', 'price',)
+    list_display = ('id', 'category', 'name', 'quantity', 'price', 'total_cost')
 
 class LogAdmin(admin.ModelAdmin):
-    list_display = ('id', 'category', 'name', 'subcategory', 'quantity', 'price', 'time',)
+    list_display = ('id', 'category', 'name', 'quantity', 'price', 'date',)
     
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Subcategory, SubAdmin)
 admin.site.register(Part, PartAdmin)
 admin.site.register(Inventory, InventoryAdmin)
 admin.site.register(Log, LogAdmin)

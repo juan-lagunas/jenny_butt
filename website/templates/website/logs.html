@@ -1,0 +1,30 @@
+{% extends 'website/user.html' %}
+{% block title %}Logs{% endblock %}
+{% block body %}
+<main class="user">
+    <div class="container py-5 text-center"> 
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-start">Category</th>
+                    <th class="text-start">Name</th>
+                    <th class="text-end">Quantity</th>
+                    <th class="text-end">Price</th>
+                    <th class="text-end">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in logs %}
+                    <tr>
+                        <td class="text-start">{{ row.category }}</td>
+                        <td class="text-start">{{ row.name }}</td>
+                        <td class="text-end">{{ row.quantity }}</td>
+                        <td class="text-end">${{ row.price }}</td>
+                        <td class="text-end">{{ row.date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}
