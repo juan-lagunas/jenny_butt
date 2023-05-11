@@ -1,6 +1,7 @@
 {% extends 'website/nouser.html' %}
 {% block title %}Signup{% endblock %}
 {% block body %}
+<main class="nouser">
     <div class="form-container">
         <h1>Signup</h1>
         
@@ -10,12 +11,13 @@
           {% if message %}
             <h6>{{ message }}</h6>
           {% endif %}
-          <input type="text" placeholder="  Username" name="username" autofocus autocomplete="off">
-          <input type="email" placeholder="  Email" name="email" autofocus autocomplete="off">
-          <input type="password" placeholder="  Password" name="password" autofocus autocomplete="off">
-          <input type="password" placeholder="  Confirmation" name="confirmation" autofocus autocomplete="off">
+          <input type="text" placeholder="Username" name="username" autofocus autocomplete="off">
+          <input type="email" placeholder="Email" name="email" autocomplete="off">
+          <input type="password" placeholder="Password" name="password" autocomplete="off">
+          <input type="password" placeholder="Confirmation" name="confirmation" autocomplete="off">
           <button type="submit">Submit</button>
         </form>
         <h3><a href="{% url 'home' %}">Go back</a></h3> 
     </div>
+</main>
 {% endblock %}

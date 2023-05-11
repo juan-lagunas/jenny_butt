@@ -1,0 +1,17 @@
+{% extends 'website/user.html' %}
+{% block title %}Checkout{% endblock %}
+{% block body %}
+<main class="user">
+    <h1>Inventory Checkout: </h1>
+    
+    <form action="{% url 'checkout' %}" method="post" id="checkout">
+        {% csrf_token %}
+        {% if message %}
+            <h6>{{ message }}</h6>
+        {% endif %}
+        <input type="text" placeholder="Part name" name="part" autofocus required>
+        <input type="text" placeholder="Quantity" name="quantity" required>
+        <input type="submit" value="submit">
+    </form>
+</main>
+{% endblock %}

@@ -13,7 +13,7 @@ class InventoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'category', 'name', 'quantity', 'price', 'total_cost')
 
 class LogAdmin(admin.ModelAdmin):
-    list_display = ('id', 'category', 'name', 'quantity', 'price', 'time',)
+    list_display = ('id', 'category', 'name', 'quantity', 'price', 'date',)
     
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Part, PartAdmin)

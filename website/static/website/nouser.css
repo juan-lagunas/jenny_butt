@@ -1,0 +1,47 @@
+/* for all pages */
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    height: 100vh;
+    background: #141D29;
+    color: white;
+}
+
+/* no user home */
+
+main.nouser {
+    height: 100vh;
+    text-align: center;
+}
+
+#home-banner {
+    height: 50%;
+    padding-top: 50px;
+}
+
+.no-user-home .col a {
+    font-size: 50px;
+}
+
+/* sign in and sign up */
+
+.form-container {
+    padding-top: 100px;
+}
+
+.form-container form {
+    padding-top: 30px;
+}
+
+.form-container h3 {
+    padding-top: 20px;
+}
+
+.nouser input, button {
+    height: 40px;
+    padding: 0 10px;
+}

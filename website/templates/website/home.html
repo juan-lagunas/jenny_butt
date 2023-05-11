@@ -1,30 +1,30 @@
 {% extends 'website/user.html' %}
 {% block title %}Home{% endblock %}
 {% block body %}
-    <div id="user-home">
-        <h4 id="greet">Welcome, {{ request.user }}!</h4>
-        <h1>Inventory Entry: </h1>
-        
-        <form action="{% url 'addInventory' %}" method="post" id="addInventory">
-            {% csrf_token %}
-            {% if message1 %}
-                <h6>{{ message1 }}</h6>
-            {% endif %}
-            <input type="text" placeholder="Part name" name="part" autofocus required>
-            <input type="text" placeholder="Quantity" name="quantity" required>
-            <input type="submit" value="submit">
-        </form>
+<main id="user-home" class="user">
+    <h4 id="greet">Welcome, {{ request.user }}!</h4>
+    <h1>Inventory Entry: </h1>
+    
+    <form action="{% url 'addInventory' %}" method="post" id="addInventory">
+        {% csrf_token %}
+        {% if message1 %}
+            <h6>{{ message1 }}</h6>
+        {% endif %}
+        <input type="text" placeholder="Part name" name="part" autofocus required>
+        <input type="text" placeholder="Quantity" name="quantity" required>
+        <input type="submit" value="submit">
+    </form>
 
-        <h1>Data Entry: </h1>
-        <form action="{% url 'dataEntry' %}" method="post"class="data">
-            {% csrf_token %}
-            {% if message2 %}
-                <h6>{{ message2 }}</h6>
-            {% endif %}
-            <input type="text" name="category" placeholder="Category" required>
-            <input type="text" name="part" placeholder="Part Name" required>
-            <input type="text" name="price" placeholder="Part Price" required>
-            <input type="submit" value="submit">
-        </form>
-    </div>
+    <h1>Data Entry: </h1>
+    <form action="{% url 'dataEntry' %}" method="post"class="data">
+        {% csrf_token %}
+        {% if message2 %}
+            <h6>{{ message2 }}</h6>
+        {% endif %}
+        <input type="text" name="category" placeholder="Category" required>
+        <input type="text" name="part" placeholder="Part Name" required>
+        <input type="text" name="price" placeholder="Part Price" required>
+        <input type="submit" value="submit">
+    </form>
+</main>
 {% endblock %}

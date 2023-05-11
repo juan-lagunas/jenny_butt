@@ -2,15 +2,17 @@
 {% block title %}Get Started{% endblock %}
    
 {% block body %}
-      <div id="banner"><h1>Not Logged In</h1></div>
-      <div class="no-user-home container text-center">
-          <div class="row">
-            <div class="col">
-              <a href="{% url 'signin' %}">Sign In</a>
-            </div>
-            <div class="col">
-              <a href="{% url 'signup' %}">Sign Up</a>
-            </div>
-          </div>
-        </div>
+<main class="nouser container">
+  <div id="home-banner"><h1>Not Logged In</h1></div>
+  <div class="no-user-home text-center">
+    <div class="row">
+      <div class="col">
+        <a href="{% url 'signin' %}">Sign In</a>
+      </div>
+      <div class="col">
+        <a href="{% url 'signup' %}">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</main>
 {% endblock %}

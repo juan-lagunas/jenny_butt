@@ -1,35 +1,37 @@
 {% extends 'website/user.html' %}
 {% block title %}Inventory{% endblock %}
 {% block body %}
-<main class="container py-5 text-center">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th class="text-start">Category</th>
-                <th class="text-start">Name</th>
-                <th class="text-end">Quantity</th>
-                <th class="text-end">Price</th>
-                <th class="text-end">Total</th>
-            </tr>
-        </thead>
-       <tbody>
-            {% for row in inventory %}
+<main class="user">
+    <div class="container py-5 text-center">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td class="text-start">{{ row.category }}</td>
-                    <td class="text-start">{{ row.name }}</td>
-                    <td class="text-end">{{ row.quantity }}</td>
-                    <td class="text-end">{{ row.price }}</td>
-                    <td class="text-end">{{ row.total_cost }}</td>
+                    <th class="text-start">Category</th>
+                    <th class="text-start">Name</th>
+                    <th class="text-end">Quantity</th>
+                    <th class="text-end">Price</th>
+                    <th class="text-end">Total</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td class="border-0 fw-bold text-end" colspan="4">TOTAL</td>
-                <td class="border-0 w-bold text-end">{{ total }}</td>
-            </tr>
-        </tfoot>
-    </table>
+            </thead>
+        <tbody>
+                {% for row in inventory %}
+                    <tr>
+                        <td class="text-start">{{ row.category }}</td>
+                        <td class="text-start">{{ row.name }}</td>
+                        <td class="text-end">{{ row.quantity }}</td>
+                        <td class="text-end">${{ row.price }}</td>
+                        <td class="text-end">${{ row.total_cost }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="border-0 fw-bold text-end" colspan="4">TOTAL</td>
+                    <td class="border-0 w-bold text-end">${{ total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </main>
 
 {% endblock %}

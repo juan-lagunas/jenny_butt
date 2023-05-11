@@ -11,5 +11,5 @@ urlpatterns = [
     path('addInventory', views.addInventory, name='addInventory'),
     path('inventory', views.inventory, name='inventory'),
     path('logs', views.log, name='logs'),
-    path('checkout', views.checkout, name='checkout')
+    path('checkout', views.checkout, name='checkout'),
 ]

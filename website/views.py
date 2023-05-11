@@ -102,7 +102,7 @@ def dataEntry(request):
                     category=category_data.first()
                 )
         else:      
-            try: 
+            try:
                 Category.objects.create(category=form_category)
                 Part.objects.create(
                     name=form_part,
@@ -111,7 +111,7 @@ def dataEntry(request):
                 )
             except:
                 return render(request, 'website/home.html', {
-                    'message2': 'Part name already taken. Must be unique.'
+                    'message2': 'Category created successfully but part name is already taken'
                 })
 
         return render(request, 'website/home.html', {
@@ -147,7 +147,6 @@ def addInventory(request):
         
         # Using part data get subcategory data
         category_data = Category.objects.get(category=part_data.category)
-        date = datetime.now()
 
         # If part exists in Inventory database update quantity else put part in database
         if Inventory.objects.filter(name=part_data.name).exists():
@@ -163,12 +162,13 @@ def addInventory(request):
             )
 
         # Create a new log for the update of Inventory
+        date = datetime.now()
         Log.objects.create(
             category=category_data.category,
             name=part_data.name,
             quantity=form_quantity,
             price=part_data.price,
-            time=date,
+            date=date,
         )
 
         return render(request, 'website/home.html', {
@@ -190,10 +190,58 @@ def inventory(request):
     })
 
 def log(request):
-    logs = Log.objects.all()
+    logs = Log.objects.order_by('-date')
     return render(request, 'website/logs.html', {
         'logs': logs
     })
 
 def checkout(request):
-    pass
+    if request.method == 'POST':
+        part = request.POST['part'].title()
+        try:
+            form_quantity = int(request.POST['quantity'])
+        except ValueError:
+            return render(request, 'website/checkout.html', {
+                'message': 'Not a valid quantity. Needs to be a whole numner.'
+            })
+        
+        if not part or not form_quantity:
+            return render(request, 'website/checkout.html', {
+                'message': 'Need to fill out both fields.'
+            })
+        
+        try:
+            part_inventory = Inventory.objects.get(name=part)
+        except:
+            return render(request, 'website/checkout.html', {
+                'message': 'Part not in inventory'
+            })
+        
+        if part_inventory.quantity < form_quantity:
+            return render(request, 'website/checkout.html', {
+                'message': 'Do not have enough of that part.'
+            })
+        
+        part_inventory.quantity -= form_quantity
+        part_inventory.save()
+
+        if part_inventory.quantity == 0:
+            part_inventory.delete()
+
+        date = datetime.now()
+
+        Log.objects.create(
+            category=part_inventory.category,
+            name=part_inventory.name,
+            quantity=-form_quantity,
+            price=part_inventory.price,
+            date=date,
+        )
+        
+        return render(request, 'website/checkout.html', {
+            'message': 'Checkout was successful!'
+        })
+        
+
+
+    return render(request, 'website/checkout.html')

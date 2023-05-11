@@ -37,7 +37,7 @@ class Log(models.Model):
     name = models.CharField(max_length=100)
     quantity = models.IntegerField()
     price = models.FloatField()
-    time = models.DateField()
+    date = models.DateTimeField()
 
 
     
