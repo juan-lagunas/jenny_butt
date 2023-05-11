@@ -182,3 +182,10 @@ def addInventory(request):
         return render(request, 'website/home.html', {
             'message1': 'Inventory entry was successful'
         })
+    
+
+def inventory(request):
+    inventory = Inventory.objects.all()
+    return render(request, 'website/inventory.html', {
+        'inventory': inventory
+    })
