@@ -15,7 +15,7 @@ def home(request):
 
 def singup(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        username = request.POST['username'].title()
         email = request.POST['email']
         password = request.POST['password']
         confirmation = request.POST['confirmation']
@@ -48,7 +48,7 @@ def singup(request):
 
 def signin(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        username = request.POST['username'].title()
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
