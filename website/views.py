@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Category, Subcategory, Part, Inventory, Log
+from .models import Category, Part, Inventory, Log
 from datetime import datetime
 
 # Create your views here.
@@ -72,52 +72,41 @@ def signout(request):
 # Handle inputing data into parts,subcategory,category databases
 def dataEntry(request):
     if request.method == 'POST':
+        # Set variables for user input
         form_category = request.POST['category']
-        form_subcategory = request.POST['subcategory']
         form_part = request.POST['part']
-        form_price = float(request.POST['price'])
+        try:
+            form_price = float(request.POST['price'])
+        except ValueError:
+            return render(request, 'website/home.html', {
+                'message2': 'Not a valid price'
+            })
 
-        if not form_category or not form_subcategory or not form_part or not form_price:
+        # If any input field not filled out return error message
+        if not form_category or not form_part or not form_price:
             return render(request, 'website/home.html', {
                 'message2': 'Please Fill Out Fields.'
             })
-
-        try:
-            category_data = Category.objects.get(category__iexact=form_category)
-            try:
-                subcategory_data = Subcategory.objects.get(subcategory__iexact=form_subcategory, category=category_data)
-                try:
-                    Part.objects.get(name__iexact=form_part, subcategory=subcategory_data)
-                    return render(request, 'website/home.html', {
-                        'message2': 'Part already exists'
-                    })
-                except:
-                    Part.objects.create(
-                        name=form_part,
-                        price=form_price,
-                        subcategory=subcategory_data,
-                    )
-            except:
-                Subcategory.objects.create(
-                    subcategory=form_subcategory,
-                    category=category_data,
-                )
-                
+        
+        # Get category data using user's input
+        category_data = Category.objects.filter(category__iexact=form_category).first()
+        if category_data.exists():
+            if Part.objects.filter(name__iexact=form_part).exists():
+                return render(request, 'website/home.html', {
+                    'message2': 'Part already exists'
+                })
+            else:
                 Part.objects.create(
                     name=form_part,
                     price=form_price,
-                    subcategory=Subcategory.objects.get(subcategory=form_subcategory, category=category_data),
+                    category=category_data
                 )
-        except:
+        else:
             Category.objects.create(category=form_category)
-            Subcategory.objects.create(
-                subcategory=form_subcategory,
-                category=Category.objects.get(category__iexact=form_category),
-            )
             Part.objects.create(
                 name=form_part,
                 price=form_price,
-                subcategory=Subcategory.objects.get(subcategory=form_subcategory, category=form_category),
+                category=category_data
             )
 
         return render(request, 'website/home.html', {
@@ -152,7 +141,7 @@ def addInventory(request):
             })
         
         # Using part data get subcategory data
-        subcategory_data = Subcategory.objects.get(subcategory__iexact=part_data.subcategory)
+        category_data = Category.objects.get(category__iexact=part_data.category)
         date = datetime.now()
 
         # If part exists in Inventory database update quantity else put part in database
@@ -162,19 +151,17 @@ def addInventory(request):
             inventory_data.save()
         else:
             Inventory.objects.create(
-                category=subcategory_data.category, 
-                name=part_data.name, 
-                subcategory=subcategory_data.subcategory, 
-                quantity=form_quantity, 
+                category=category_data.category,
+                name=part_data.name,
+                quantity=form_quantity,
                 price=part_data.price,
             )
 
         # Create a new log for the update of Inventory
         Log.objects.create(
-            category=subcategory_data.category, 
-            name=part_data.name, 
-            subcategory=subcategory_data.subcategory, 
-            quantity=form_quantity, 
+            category=category_data.category,
+            name=part_data.name,
+            quantity=form_quantity,
             price=part_data.price,
             time=date,
         )
@@ -187,5 +174,5 @@ def addInventory(request):
 def inventory(request):
     inventory = Inventory.objects.all()
     return render(request, 'website/inventory.html', {
-        'inventory': inventory
+        'inventory': inventory,
     })

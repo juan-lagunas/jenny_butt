@@ -1,43 +1,35 @@
 {% extends 'website/user.html' %}
-<main>
+{% block title %}Inventory{% endblock %}
+{% block body %}
+<main class="container py-5 text-center">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th class="text-start">Symbol</th>
+                <th class="text-start">Category</th>
                 <th class="text-start">Name</th>
-                <th class="text-end">Shares</th>
+                <th class="text-end">Quantity</th>
                 <th class="text-end">Price</th>
-                <th class="text-end">TOTAL</th>
+                <th class="text-end">Total</th>
             </tr>
         </thead>
        <tbody>
-            
+            {% for row in inventory %}
                 <tr>
-                    <td class="text-start">AAPL</td>
-                    <td class="text-start">Apple Inc</td>
-                    <td class="text-end">10</td>
-                    <td class="text-end">$173.56</td>
-                    <td class="text-end">$1,735.55</td>
+                    <td class="text-start">{{ row.category }}</td>
+                    <td class="text-start">{{ row.name }}</td>
+                    <td class="text-end">{{ row.quantity }}</td>
+                    <td class="text-end">{{ row.price }}</td>
+                    <td class="text-end">{% widthratio row.price 1 row.quantity %}</td>
                 </tr>
-            
-                <tr>
-                    <td class="text-start">NFLX</td>
-                    <td class="text-start">Netflix Inc.</td>
-                    <td class="text-end">5</td>
-                    <td class="text-end">$335.42</td>
-                    <td class="text-end">$1,677.10</td>
-                </tr>
-            
+            {% endfor %}
         </tbody>
         <tfoot>
             <tr>
-                <td class="border-0 fw-bold text-end" colspan="4">Cash</td>
-                <td class="border-0 text-end">$6,621.60</td>
-            </tr>
-            <tr>
                 <td class="border-0 fw-bold text-end" colspan="4">TOTAL</td>
-                <td class="border-0 w-bold text-end">$10,034.25</td>
+                <td class="border-0 w-bold text-end">x</td>
             </tr>
         </tfoot>
     </table>
 </main>
+
+{% endblock %}
