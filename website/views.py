@@ -72,9 +72,9 @@ def signout(request):
 # Handle inputing data into parts,subcategory,category databases
 def dataEntry(request):
     if request.method == 'POST':
-        form_category = request.POST['category']
-        form_subcategory = request.POST['subcategory']
-        form_part = request.POST['part']
+        form_category = request.POST['category'].title()
+        form_subcategory = request.POST['subcategory'].title()
+        form_part = request.POST['part'].title()
         form_price = float(request.POST['price'])
 
         if not form_category or not form_subcategory or not form_part or not form_price:
@@ -82,43 +82,38 @@ def dataEntry(request):
                 'message2': 'Please Fill Out Fields.'
             })
 
-        try:
-            category_data = Category.objects.get(category__iexact=form_category)
-            try:
-                subcategory_data = Subcategory.objects.get(subcategory__iexact=form_subcategory, category=category_data)
-                try:
-                    Part.objects.get(name__iexact=form_part, subcategory=subcategory_data)
-                    return render(request, 'website/home.html', {
-                        'message2': 'Part already exists'
-                    })
-                except:
-                    Part.objects.create(
-                        name=form_part,
-                        price=form_price,
-                        subcategory=subcategory_data,
-                    )
-            except:
-                Subcategory.objects.create(
-                    subcategory=form_subcategory,
-                    category=category_data,
-                )
-                
-                Part.objects.create(
-                    name=form_part,
-                    price=form_price,
-                    subcategory=Subcategory.objects.get(subcategory=form_subcategory, category=category_data),
-                )
-        except:
+        if not Category.objects.filter(category=form_category).exists():
             Category.objects.create(category=form_category)
             Subcategory.objects.create(
                 subcategory=form_subcategory,
-                category=Category.objects.get(category__iexact=form_category),
+                category=Category.objects.get(category=form_category)
             )
             Part.objects.create(
                 name=form_part,
                 price=form_price,
-                subcategory=Subcategory.objects.get(subcategory=form_subcategory, category=form_category),
+                subcategory=Subcategory.objects.get(subcategory=form_subcategory)
             )
+        else:
+            if not Subcategory.objects.filter(subcategory=form_subcategory).exists():
+                Subcategory.objects.create(
+                    subcategory=form_subcategory,
+                    category=Category.objects.get(category=form_category)
+                )
+                Part.objects.create(
+                    name=form_part, price=form_price,
+                    subcategory=Subcategory.objects.get(subcategory=form_subcategory)
+                )
+            else:
+                if not Part.objects.filter(name=form_part, subcategory=Subcategory.objects.filter(subcategory=form_subcategory, category=Category.objects.filter(category=form_category))).exists():
+                    Part.objects.create(
+                        name=form_part,
+                        price=form_price,
+                        subcategory=Subcategory.objects.get(subcategory=form_subcategory)
+                    )  
+                else:
+                    return render(request, 'website/home.html', {
+                        'message2': 'Part already exists'
+                    })
 
         return render(request, 'website/home.html', {
             'message2': 'Data entry successful!'
@@ -129,7 +124,7 @@ def dataEntry(request):
 def addInventory(request):
     if request.method == 'POST':
         # Store user input and confirm input for quantity is a whole number
-        form_part = request.POST['part']
+        form_part = request.POST['part'].title()
         try:
             form_quantity = int(request.POST['quantity'])
         except ValueError:
@@ -145,18 +140,18 @@ def addInventory(request):
         
         # Check that part exists in Parts database
         try:
-            part_data = Part.objects.get(name__iexact=form_part)
+            part_data = Part.objects.get(name=form_part)
         except:
             return render(request, 'website/home.html', {
                 'message1': 'Part not found'
             })
         
         # Using part data get subcategory data
-        subcategory_data = Subcategory.objects.get(subcategory__iexact=part_data.subcategory)
+        subcategory_data = Subcategory.objects.get(subcategory=part_data.subcategory)
         date = datetime.now()
 
         # If part exists in Inventory database update quantity else put part in database
-        if Inventory.objects.filter(name__iexact=part_data.name).exists():
+        if Inventory.objects.filter(name=part_data.name).exists():
             inventory_data = Inventory.objects.get(name__iexact=part_data.name)
             inventory_data.quantity += form_quantity
             inventory_data.save()
